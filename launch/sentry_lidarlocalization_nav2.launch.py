@@ -33,6 +33,12 @@ def generate_launch_description():
 #        arguments=['0.13', '0', '0.6', '1', '0', '0', '0', 'base_link', 'lidar_base']
 #    )
 
+    exec_livox_lidar = ExecuteProcess(
+        cmd=[ 'ros2', 'launch',
+            'pointcloud_to_laserscan', 'livox2d.launch.py'],
+        output='screen',
+    )
+
     exec_lidar_localization = ExecuteProcess(
         cmd=[ 'ros2', 'launch',
             'lidar_localization_ros2', 'lidar_localization.launch.py'],
@@ -78,9 +84,7 @@ def generate_launch_description():
     )
 
     ld = LaunchDescription()
-#    ld.add_action(tf2_base_link_lidar_base)
-#    ld.add_action(cartographer_node)
-#    ld.add_action(occupancy_grid_node)
+    ld.add_action(exec_livox_lidar)
     ld.add_action(exec_lidar_localization)
     ld.add_action(convert_pose2tf_node)
 #    ld.add_action(nav2_launch)
