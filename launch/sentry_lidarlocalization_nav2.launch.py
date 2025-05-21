@@ -2,7 +2,7 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, ExecuteProcess
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch.substitutions import PathJoinSubstitution
@@ -35,7 +35,7 @@ def generate_launch_description():
 
     exec_lidar_localization = ExecuteProcess(
         cmd=[ 'ros2', 'launch',
-            'lidar_localization_ros2 ', 'lidar_localization.launch.py'],
+            'lidar_localization_ros2', 'lidar_localization.launch.py'],
         output='screen',
     )
 
