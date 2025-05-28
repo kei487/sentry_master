@@ -1,0 +1,6 @@
+image: uedalab3.pgm
+resolution: 0.1
+origin: [-4.011865615844727, -2.722609043121338, 0.0]
+occupied_thresh: 0.65
+free_thresh: 0.2
+negate: 0
