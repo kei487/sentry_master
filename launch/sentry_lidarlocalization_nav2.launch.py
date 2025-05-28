@@ -63,12 +63,12 @@ def generate_launch_description():
     nav2_launch = IncludeLaunchDescription(
         launch_description_source=PythonLaunchDescriptionSource([
             get_package_share_directory('nav2_bringup'),
-            '/launch/bringup_launch.py'
+            '/launch/navigation_launch.py'
         ]),
         launch_arguments={
                 'use_sim_time': 'False',
                 'params_file': nav2_config,
-                'map': map_yaml_file,
+#                'map': map_yaml_file,
         }.items()
     )
 
