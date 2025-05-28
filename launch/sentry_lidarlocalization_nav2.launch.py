@@ -9,29 +9,34 @@ from launch.substitutions import PathJoinSubstitution
 
 def generate_launch_description():
     
-#    ldlidar_launch = IncludeLaunchDescription(
-#        launch_description_source=PythonLaunchDescriptionSource([
-#            get_package_share_directory('ldlidar_node'),
-#            '/launch/ldlidar_with_mgr.launch.py'
-#        ])
-#    )
-#
-#    laser_filter_node = Node(
-#            package="laser_filters",
-#            executable="scan_to_scan_filter_chain",
-#            parameters=[
-#                    PathJoinSubstitution([
-#                    get_package_share_directory("laser_filters"),
-#                    "examples", "box_filter_example.yaml",
-#            ])],
-#            remappings=[('/scan','/ldlidar_node/scan'),('/scan_filtered','/scan')],
-#    )
-
 #    tf2_base_link_lidar_base = Node(
 #        package='tf2_ros',
 #        executable='static_transform_publisher',
 #        arguments=['0.13', '0', '0.6', '1', '0', '0', '0', 'base_link', 'lidar_base']
 #    )
+
+    map_yaml_file = os.path.join(
+        get_package_share_directory('sentry_master'),
+        'map/uedalab.yaml',
+    )
+    lifecycle_nodes = ['map_server'] 
+
+    map_server = Node(
+	package='nav2_map_server',
+	executable='map_server',
+	name='map_server',
+	parameters=[{'yaml_filename': map_yaml_file}],
+	output='screen'
+    )
+
+    lifecycle_manager = Node(
+	package='nav2_lifecycle_manager',
+	executable='lifecycle_manager',
+	name='lifecycle_manager_localization',
+	output='screen',
+	parameters=[{'autostart': True},
+		    {'node_names': lifecycle_nodes}]
+    )
 
     exec_livox_lidar = ExecuteProcess(
         cmd=[ 'ros2', 'launch',
@@ -45,28 +50,27 @@ def generate_launch_description():
         output='screen',
     )
 
-    convert_pose2tf_node = Node(
-            package='convert_pose2tf',
-            executable='convert_pose2tf',
-            name='convert_pose2tf_node',
-            output='screen',
-    )
+#    convert_pose2tf_node = Node(
+#            package='convert_pose2tf',
+#            executable='convert_pose2tf',
+#            name='convert_pose2tf_node',
+#            output='screen',
+#    )
             
     
-#    nav2_config = os.path.join(cartographer_config_dir, 'nav2_param.yaml')
-#    nav2_map = os.path.join(cartographer_map_dir, 'map.yaml')
-#
-#    nav2_launch = IncludeLaunchDescription(
-#        launch_description_source=PythonLaunchDescriptionSource([
-#            get_package_share_directory('nav2_bringup'),
-#            '/launch/bringup_launch.py'
-#        ]),
-#        launch_arguments={
-#                'use_sim_time': 'False',
-#                'params_file': nav2_config,
-#                'map': nav2_map,
-#        }.items()
-#    )
+    nav2_config = os.path.join(get_package_share_directory('sentry_master'), 'nav2_param.yaml')
+
+    nav2_launch = IncludeLaunchDescription(
+        launch_description_source=PythonLaunchDescriptionSource([
+            get_package_share_directory('nav2_bringup'),
+            '/launch/bringup_launch.py'
+        ]),
+        launch_arguments={
+                'use_sim_time': 'False',
+                'params_file': nav2_config,
+                'map': map_yaml_file,
+        }.items()
+    )
 
     rviz2_config = os.path.join(
         get_package_share_directory('sentry_master'),
@@ -84,9 +88,11 @@ def generate_launch_description():
     )
 
     ld = LaunchDescription()
+    ld.add_action(map_server)
+    ld.add_action(lifecycle_manager)
     ld.add_action(exec_livox_lidar)
     ld.add_action(exec_lidar_localization)
-    ld.add_action(convert_pose2tf_node)
+#    ld.add_action(convert_pose2tf_node)
 #    ld.add_action(nav2_launch)
     ld.add_action(rviz2_node)
     return ld
