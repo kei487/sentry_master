@@ -58,7 +58,7 @@ def generate_launch_description():
 #    )
             
     
-    nav2_config = os.path.join(get_package_share_directory('sentry_master'), 'nav2_param.yaml')
+    nav2_config = os.path.join(get_package_share_directory('sentry_master'), 'config/nav2_param.yaml')
 
     nav2_launch = IncludeLaunchDescription(
         launch_description_source=PythonLaunchDescriptionSource([
