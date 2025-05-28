@@ -50,12 +50,12 @@ def generate_launch_description():
         output='screen',
     )
 
-    convert_pose2tf_node = Node(
-            package='convert_pose2tf',
-            executable='convert_pose2tf',
-            name='convert_pose2tf_node',
-            output='screen',
-    )
+#    convert_pose2tf_node = Node(
+#            package='convert_pose2tf',
+#            executable='convert_pose2tf',
+#            name='convert_pose2tf_node',
+#            output='screen',
+#    )
             
     
 #    nav2_config = os.path.join(cartographer_config_dir, 'nav2_param.yaml')
@@ -89,9 +89,11 @@ def generate_launch_description():
     )
 
     ld = LaunchDescription()
+    ld.add_action(map_server)
+    ld.add_action(lifecycle_manager)
     ld.add_action(exec_livox_lidar)
     ld.add_action(exec_lidar_localization)
-    ld.add_action(convert_pose2tf_node)
+#    ld.add_action(convert_pose2tf_node)
 #    ld.add_action(nav2_launch)
     ld.add_action(rviz2_node)
     return ld
