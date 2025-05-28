@@ -1,6 +1,5 @@
 image: uedalab.pgm
-mode: trinary
-resolution: 0.2
+resolution: 0.1
 origin: [-7.044584274291992, -11.710043907165527, 0.0]
 occupied_thresh: 0.65
 free_thresh: 0.2
