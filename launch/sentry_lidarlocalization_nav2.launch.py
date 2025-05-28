@@ -93,7 +93,7 @@ def generate_launch_description():
     ld.add_action(exec_livox_lidar)
     ld.add_action(exec_lidar_localization)
 #    ld.add_action(convert_pose2tf_node)
-#    ld.add_action(nav2_launch)
+    ld.add_action(nav2_launch)
     ld.add_action(rviz2_node)
     return ld
 
