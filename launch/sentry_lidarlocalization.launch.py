@@ -17,7 +17,7 @@ def generate_launch_description():
 
     map_yaml_file = os.path.join(
         get_package_share_directory('sentry_master'),
-        'map/uedalab3.yaml',
+        'map/cit19hallway.yaml',
     )
     lifecycle_nodes = ['map_server'] 
 
