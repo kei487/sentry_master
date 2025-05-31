@@ -1,0 +1,6 @@
+image: aozen1.pgm
+resolution: 0.1
+origin: [-9.44023323059082, -8.421736717224121, 0.0]
+occupied_thresh: 0.65
+free_thresh: 0.2
+negate: 0
